@@ -415,14 +415,14 @@ def delete_files(app, objects):
             logging.info("Deleting %s", obj['name'])
 
             # Copy the file out of the way
-            new_revision(app, _container,
-                    obj['name'], obj.get('hash', 'deleted'))
+            new_revision(app, _container, obj.get('hash', 'deleted'))
 
             # then delete it as it no longer exists.
             rm = get_container(app, name=_container)\
                 .storage_object(obj['name'])
             rm.delete()
-        except:
+        except Exception as e:
+            logging.error("Failed to delete %s. Error: %s", obj['name'], e)
             break
 
 
